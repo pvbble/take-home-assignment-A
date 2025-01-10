@@ -2,6 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import { getQuery, postQuery } from './functions'
 
 function App() {
   const [count, setCount] = useState(1)
@@ -18,8 +19,11 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count * 2)}>
-          count is {count}
+        <button onClick={getQuery}>
+          GET
+        </button>
+        <button onClick={() => postQuery("test title", "test description", "ea6fea18-2d8b-4910-a033-44ab19bcd7ca")}>
+          POST
         </button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
