@@ -14,6 +14,27 @@ model FormData {
   id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   question  String
   answer    String
+  query     Query?
 
   @@map("form_data")
+}
+
+model Query {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title       String
+  description String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  status      QueryStatus
+  formData    FormData  @relation(fields: [formDataId], references: [id])
+  formDataId  String    @unique @db.Uuid // One-to-one relation with FormData
+
+  @@map("queries")
+}
+
+enum QueryStatus {
+  OPEN
+  RESOLVED
+
+  @@map("query_status")
 }
