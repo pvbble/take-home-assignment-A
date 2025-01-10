@@ -39,8 +39,8 @@ async function queryRoutes(app: FastifyInstance) {
     }
   })
 
-  // PUT/PATCH to update a query
-  app.patch('/:id', async (request, reply) => {
+  // PUT to update a query
+  app.put('/:id', async (request, reply) => {
     const { id } = request.params as { id: string }
     const { status, description } = request.body as any
     try {
@@ -61,6 +61,7 @@ async function queryRoutes(app: FastifyInstance) {
 
   // DELETE endpoint
   app.delete('/:id', async (request, reply) => {
+    log.error({}, "delete");
     const { id } = request.params as { id: string }
     try {
       await prisma.query.delete({

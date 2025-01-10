@@ -1,10 +1,10 @@
-export interface IQuery { // TODO: fix this
+export interface IQuery {
     id: string
     title: string
     description: string
-    createdAt: string
-    updatedAt: string
-    status: string
+    createdAt: Date
+    updatedAt: Date
+    status: 'OPEN' | 'RESOLVED'
     formData: string
     formDataId: string
   }
