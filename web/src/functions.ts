@@ -7,9 +7,9 @@ export const getFormData = async (): Promise<any> => {
             'Content-Type': 'application/json'
         }
     })
-
-    console.log(await response.json());
-    return;
+    const data = await response.json();
+    console.log(data.data.formData);
+    return data.data.formData;
 }
 
 
