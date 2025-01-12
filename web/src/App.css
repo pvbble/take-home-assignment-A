@@ -14,6 +14,7 @@ h3 {
 
 table {
   border-collapse: collapse;
+  width: 100%;
 }
 
 th {
@@ -27,13 +28,29 @@ th {
 td {
   color: black;
   font-weight: 500;
-  font-size: medium;
+  font-size: smaller;
   margin: 0;
   padding: 0.5rem 0.5rem 0.5rem 0.5rem;
 }
 
 tr {
   align-content: stretch;
+}
+
+.button-cell .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 1;
+}
+
+.button-cell:hover .tooltiptext {
+  visibility: visible;
 }
 
 .button-cell {
@@ -43,6 +60,7 @@ tr {
   margin: 0;
   padding: 0;
   min-width: 8rem;
+  position: relative;
 }
 
 tbody tr {
@@ -55,8 +73,15 @@ tbody tr:hover {
 }
 
 tr button {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   width: 100%;
-  height: max-content;
+  height: 100%;
+  
+  width: 100%;
   color: grey;
   background-color: transparent;
   box-shadow: none;

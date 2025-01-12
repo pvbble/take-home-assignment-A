@@ -113,10 +113,11 @@ function App() {
               <tr key={fd.id}>
                 <td>{fd.question}</td>
                 <td>{fd.answer}</td>
-                <td className='button-cell'>
-                  <button onClick={() => setCurrFd(fd)} className={getQueryStatusClass(fd.query?.status)}>
-                    {getQueryStatusIcon(fd.query?.status)}
-                  </button>
+                <td className={'button-cell ' + getQueryStatusClass(fd.query?.status)}>
+                <button onClick={() => setCurrFd(fd)} className={getQueryStatusClass(fd.query?.status)}>
+                  {getQueryStatusIcon(fd.query?.status)}
+                  {!fd.query && <span className="tooltiptext">Create Query</span>}
+                </button>
                 </td>
               </tr>
             ))}
