@@ -1,31 +1,18 @@
+import { FormData } from "./types";
 
-
-export const getFormData = async (): Promise<any> => {
+export const getFormData = async (): Promise<FormData[]> => {
     const response = await fetch('http://127.0.0.1:8080/form-data', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
         }
     })
-    const data = await response.json();
-    console.log(data.data.formData);
-    return data.data.formData;
+    const json = await response.json();
+
+    return json.data.formData;
 }
 
-
-export const getQuery = async (): Promise<any> => {
-    const response = await fetch('http://127.0.0.1:8080/query', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-
-    console.log(await response.json());
-    return;
-}
-
-export const postQuery = async (title: string, description: string, formDataId: string): Promise<Boolean> => {
+export const postQuery = async (title: string, description: string, formDataId: string): Promise<boolean> => {
     const response = await fetch('http://127.0.0.1:8080/query', {
         method: "POST",
         body: JSON.stringify({title, description, formDataId}),
@@ -34,17 +21,16 @@ export const postQuery = async (title: string, description: string, formDataId: 
         },
     })
 
-    console.log(response.ok);
     return response.ok
 }
 
-export const updateQuery = async (id: string): Promise<boolean> => {
+export const updateQuery = async (id: string, isOpen: boolean): Promise<boolean> => {
     const url = `http://127.0.0.1:8080/query/${id}`;
     
     const response = await fetch(url, {
         method: 'PUT',
         body: JSON.stringify({
-            status: 'RESOLVED',
+            status: isOpen ? 'RESOLVED' : 'OPEN',
             description: ''
         }),
         headers: {
@@ -52,7 +38,6 @@ export const updateQuery = async (id: string): Promise<boolean> => {
         }
     });
 
-    console.log(response.ok);
     return response.ok;
 }
 
