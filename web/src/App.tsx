@@ -19,7 +19,11 @@ function App() {
 
   return (
     <>
-      <button onClick={async () => setFormData(await getFormData())}>
+      <button onClick={async () => {
+        const temp = await getFormData();
+        console.log(temp);
+        setFormData(temp.data || [])
+      }}>
         Refresh
       </button>
       <table>
@@ -71,24 +75,15 @@ function App() {
           >
             {currFd.query ? 
               <>
-              {
-              currFd.query.status == 'OPEN' ? (
-                <button onClick={() => updateQuery(currFd.query.id, true)}>
-                  Resolve
+                <button onClick={() => currFd.query && updateQuery(currFd.query.id, currFd.query.status == 'OPEN' ? "RESOLVED" : "OPEN")}>
+                  {currFd.query.status == 'OPEN' ? 'Resolve' : 'Unresolve'}
                 </button>
-              ) : (
-                <button onClick={() => updateQuery(currFd.query.id, false)}>
-                  Unresolve
+                <button onClick={() => currFd.query && deleteQuery(currFd.query.id)}>
+                  Delete
                 </button>
-              )
-              }
-            <button onClick={() => deleteQuery(currFd.query.id)}>
-              Delete
-            </button>
-            </>: (
-              <button onClick={
-                () => createQuery('whatever', 'w', currFd.id)
-              }>
+              </> 
+            : (
+              <button onClick={() => createQuery('whatever', 'w', currFd.id)}>
                 Create
               </button>
             )}

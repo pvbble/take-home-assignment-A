@@ -1,4 +1,4 @@
-import { FormData, Query, QueryStatus, ApiResponse, FormDataResponse } from "./types";
+import { FormData, Query, ApiResponse, FormDataResponse } from "./types";
 
 const API_BASE_URL = 'http://127.0.0.1:8080';
 
@@ -12,17 +12,19 @@ async function apiRequest<T>(
 ): Promise<ApiResponse<T>> {
     try {
         const url = `${API_BASE_URL}${endpoint}`;
-        const defaultHeaders = {
-            'Content-Type': 'application/json',
+
+        const requestOptions: RequestInit = {
+            ...options
         };
 
-        const response = await fetch(url, {
-            ...options,
-            headers: {
-                ...defaultHeaders,
-                ...options.headers,
-            },
-        });
+        if (options.method !== 'DELETE') {
+            requestOptions.headers = {
+                'Content-Type': 'application/json',
+                ...(options.headers as Record<string, string>)
+            };
+        }
+
+        const response = await fetch(url, requestOptions);
 
         if (!response.ok) {
             const errorText = await response.text();
@@ -45,9 +47,10 @@ async function apiRequest<T>(
  */
 export async function getFormData(): Promise<ApiResponse<FormData[]>> {
     const response = await apiRequest<FormDataResponse>('/form-data');
+    console.log(response);
     return {
         ...response,
-        data: response.data?.formData
+        data: response.data?.data?.formData
     };
 }
 
@@ -70,7 +73,7 @@ export async function createQuery(
  */
 export async function updateQuery(
     id: string, 
-    status: QueryStatus,
+    status: 'OPEN' | 'RESOLVED',
     description?: string
 ): Promise<ApiResponse<Query>> {
     return apiRequest<Query>(`/query/${id}`, {

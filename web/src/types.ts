@@ -1,15 +1,10 @@
-export enum QueryStatus {
-    OPEN = 'OPEN',
-    RESOLVED = 'RESOLVED'
-}
-
 export interface Query {
     id: string;
     title: string;
     description: string;
     createdAt: Date;
     updatedAt: Date;
-    status: QueryStatus;
+    status: 'OPEN' | 'RESOLVED';
     formDataId: string;
 }
 
@@ -27,6 +22,8 @@ export interface ApiResponse<T> {
 }
 
 export interface FormDataResponse {
-    formData: FormData[];
-    total: number;
+    data: {
+        formData: FormData[];
+        total: number;
+    }
 }
