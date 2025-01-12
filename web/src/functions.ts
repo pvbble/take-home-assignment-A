@@ -47,7 +47,6 @@ async function apiRequest<T>(
  */
 export async function getFormData(): Promise<ApiResponse<FormData[]>> {
     const response = await apiRequest<FormDataResponse>('/form-data');
-    console.log(response);
     return {
         ...response,
         data: response.data?.data?.formData
@@ -70,6 +69,8 @@ export async function createQuery(
 
 /**
  * Updates an existing query's status
+ * Note: description should never be non-empty unless we're implementing
+ * editable description, but this is not included in the assignment
  */
 export async function updateQuery(
     id: string, 

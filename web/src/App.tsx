@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
 import { getFormData, createQuery, updateQuery, deleteQuery } from './functions'
 import { FormData, QueryStatus } from './types'
+import QueryDetail from './QueryDetail'
 
 function App() {
   const [formData, setFormData] = useState<FormData[]>([])
   const [currFd, setCurrFd] = useState<FormData | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
   const dialogRef = useRef<HTMLDialogElement>(null)
 
@@ -100,15 +101,9 @@ function App() {
               <td>{fd.question}</td>
               <td>{fd.answer}</td>
               <td>
-                {fd.query == null ? (
-                  <button onClick={() => setCurrFd(fd)}>
-                    Create
-                  </button>
-                ) : (
-                  <button onClick={() => setCurrFd(fd)}>
-                    {fd.query.status}
-                  </button>
-                )}
+                <button onClick={() => setCurrFd(fd)}>
+                  {fd.query ? fd.query.status : 'Create'}
+                </button>
               </td>
             </tr>
           ))}
@@ -116,53 +111,13 @@ function App() {
       </table>
 
       {currFd && (
-        <dialog 
-          ref={dialogRef}
+        <QueryDetail
+          formData={currFd}
           onClose={() => setCurrFd(null)}
-        >
-          <div onClick={e => e.stopPropagation()}>
-            <h3>
-              {currFd.query ? 'Manage Query' : 'Create New Query'}
-            </h3>
-            
-            <div>
-              <p><strong>Question:</strong> {currFd.question}</p>
-              <p><strong>Answer:</strong> {currFd.answer}</p>
-              {currFd.query && (
-                <p><strong>Status:</strong> {currFd.query.status}</p>
-              )}
-            </div>
-
-            <div>
-              {currFd.query ? (
-                <>
-                  <button 
-                    onClick={() => currFd.query && handleUpdateQuery(
-                      currFd.query.id, 
-                      currFd.query.status === 'OPEN' ? 'RESOLVED' : 'OPEN'
-                    )}
-                  >
-                    {currFd.query.status === 'OPEN' ? 'Resolve' : 'Reopen'}
-                  </button>
-                  <button 
-                    onClick={() => currFd.query && handleDeleteQuery(currFd.query.id)}
-                  >
-                    Delete
-                  </button>
-                </>
-              ) : (
-                <button 
-                  onClick={() => handleCreateQuery(currFd.id, currFd.question, '')}
-                >
-                  Create Query
-                </button>
-              )}
-              <button onClick={() => setCurrFd(null)}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        </dialog>
+          onCreateQuery={handleCreateQuery}
+          onUpdateQuery={handleUpdateQuery}
+          onDeleteQuery={handleDeleteQuery}
+        />
       )}
     </div>
   )
