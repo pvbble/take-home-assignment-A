@@ -1,10 +1,12 @@
+export type QueryStatus = 'OPEN' | 'RESOLVED';
+
 export interface Query {
     id: string;
     title: string;
     description: string;
     createdAt: Date;
     updatedAt: Date;
-    status: 'OPEN' | 'RESOLVED';
+    status: QueryStatus;
     formDataId: string;
 }
 

@@ -1,4 +1,4 @@
-import { FormData, Query, ApiResponse, FormDataResponse } from "./types";
+import { FormData, Query, QueryStatus, ApiResponse, FormDataResponse } from "./types";
 
 const API_BASE_URL = 'http://127.0.0.1:8080';
 
@@ -73,7 +73,7 @@ export async function createQuery(
  */
 export async function updateQuery(
     id: string, 
-    status: 'OPEN' | 'RESOLVED',
+    status: QueryStatus,
     description?: string
 ): Promise<ApiResponse<Query>> {
     return apiRequest<Query>(`/query/${id}`, {
