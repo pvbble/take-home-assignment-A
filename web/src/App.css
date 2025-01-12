@@ -46,7 +46,21 @@ tr {
   padding: 5px 0;
   border-radius: 6px;
   position: absolute;
-  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 5px; 
+}
+
+.button-cell .tooltiptext::after {
+  content: " ";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
 }
 
 .button-cell:hover .tooltiptext {
