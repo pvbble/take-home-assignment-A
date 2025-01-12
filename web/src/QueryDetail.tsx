@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { Trash2Icon, X } from 'lucide-react'
 import { FormData, QueryStatus } from './types'
 
 import './QueryDetail.css'
@@ -11,7 +12,7 @@ interface QueryDetailProps {
   onDeleteQuery: (queryId: string) => Promise<void>;
 }
 
-const QueryDetail: React.FC<QueryDetailProps> = ({ 
+const QueryDetail: React.FC<QueryDetailProps> = ({
   formData,
   onClose,
   onCreateQuery,
@@ -36,63 +37,85 @@ const QueryDetail: React.FC<QueryDetailProps> = ({
 
 
   return (
-    <dialog 
+    <dialog
       ref={dialogRef}
       onClose={onClose}
       className='container'
     >
       <div onClick={e => e.stopPropagation()}>
-        <h3>
-          {formData.query ? 'Manage Query' : 'Create New Query'}
-        </h3>
-        
-        <div>
-          <p><strong>Question:</strong> {formData.question}</p>
-          <p><strong>Answer:</strong> {formData.answer}</p>
-          {formData.query && (
-            <p><strong>Status:</strong> {formData.query.status}</p>
-          )}
+        <div className='header'>
+          <h3>
+            {formData.query ? `Query | ${formData.question}` : `Create a Query | ${formData.question}`}
+          </h3>
+          <X className="x" onClick={onClose} />
         </div>
 
-        <div>
-          {formData.query ? (
-            <>
-              <p>created at: {new Date(formData.query.createdAt).toLocaleString()}</p>
-              <p>last updated at: {new Date(formData.query.updatedAt).toLocaleString()}</p>
-              <p>description: {formData.query.description}</p>
-              <button 
+        {formData.query && (
+          <div className={`row-container ${formData.query?.status === 'OPEN' ? 'open-status' : 'resolved-status'}`}>
+            <div className='info-container'>
+              <div className='info'>
+                <h3>Query Status:</h3>
+                <p>{formData.query.status == 'RESOLVED' ? 'Resolved' : 'Open'}</p>
+              </div>
+              <div className='info'>
+                <h3>Created On:</h3>
+                <p>{new Date(formData.query.createdAt).toLocaleString('en-US', {
+                  year: '2-digit',
+                  month: 'numeric',
+                  day: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: false
+                })}</p>
+              </div>
+              <div className='info'>
+                <h3>Last Updated:</h3>
+                <p>{new Date(formData.query.updatedAt).toLocaleString('en-US', {
+                  year: '2-digit',
+                  month: 'numeric',
+                  day: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: false
+                })}</p>
+              </div>
+            </div>
+            <div className='buttons'>
+              <button className={formData.query.status}
                 onClick={() => formData.query && onUpdateQuery(
-                  formData.query.id, 
+                  formData.query.id,
                   formData.query.status === 'OPEN' ? 'RESOLVED' : 'OPEN'
                 )}
               >
                 {formData.query.status === 'OPEN' ? 'Resolve' : 'Reopen'}
               </button>
-              <button 
+              <button className='delete'
                 onClick={() => formData.query && onDeleteQuery(formData.query.id)}
               >
-                Delete
+                <Trash2Icon/>
               </button>
-            </>
-          ) : (
-          <>
-            <textarea
-              id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="w-full p-2 border rounded-md"
-              rows={3}
-              placeholder="Enter query description..."
-            />
-            <button onClick={() => onCreateQuery(formData.id, formData.question, description)}>
-              Create Query
-            </button>
-          </>
+            </div>
+          </div>
+        )}
+
+
+        {formData.query ?
+          <div className='description-container'>
+            <p>Description: {formData.query.description == '' ? 'N/A' : formData.query.description}</p>
+          </div>
+          : (
+            <div className='textarea-container'>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                rows={3}
+                placeholder="Add a new remark"
+              />
+              <button className='create' onClick={() => onCreateQuery(formData.id, formData.question, description)}>
+                Create Query
+              </button>
+            </div>
           )}
-          <button onClick={onClose}>
-            Cancel
-          </button>
-        </div>
       </div>
     </dialog>
   )

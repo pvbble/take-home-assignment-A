@@ -2,6 +2,16 @@
   padding: 2rem;
 }
 
+p {
+  color: #444444;
+}
+
+h3 {
+  color: #444444;
+  font-weight: 600;
+  margin: 0;
+}
+
 table {
   border-collapse: collapse;
 }
@@ -35,12 +45,16 @@ tr {
   min-width: 8rem;
 }
 
+tbody tr {
+  border-top: 0.5px solid #DDDDDD;
+}
+
 tbody tr:hover {
   background-color: #F9F9F9;
   box-shadow: 0px 1px 2px #AAAAAA88;
 }
 
-button {
+tr button {
   width: 100%;
   height: max-content;
   color: grey;
@@ -48,6 +62,11 @@ button {
   box-shadow: none;
   border-radius: 0;
   margin: 0;
+}
+
+button:focus {
+  box-shadow: 0px 2px 4px #AAAAAAAA;
+  outline:0;
 }
 
 .check {

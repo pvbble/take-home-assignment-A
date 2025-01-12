@@ -80,10 +80,10 @@ function App() {
   }
 
   const getQueryStatusIcon = (status: QueryStatus | undefined) => {
-    if (!status) return <Plus className="h-4 w-4" />
+    if (!status) return <Plus/>
     return status === 'OPEN' 
-      ? <HelpCircle className="h-4 w-4" />
-      : <CheckCircle className="h-4 w-4" />
+      ? <HelpCircle/>
+      : <CheckCircle/>
   }
 
   const getQueryStatusClass = (status: QueryStatus | undefined) => {
