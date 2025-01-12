@@ -1,68 +1,92 @@
-import { FormData } from "./types";
+import { FormData, Query, QueryStatus, ApiResponse, FormDataResponse } from "./types";
 
-export const getFormData = async (): Promise<FormData[]> => {
-    const response = await fetch('http://127.0.0.1:8080/form-data', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    const json = await response.json();
+const API_BASE_URL = 'http://127.0.0.1:8080';
 
-    return json.data.formData;
-}
 
-export const postQuery = async (title: string, description: string, formDataId: string): Promise<boolean> => {
-    const response = await fetch('http://127.0.0.1:8080/query', {
-        method: "POST",
-        body: JSON.stringify({title, description, formDataId}),
-        headers: {
-            'Content-Type': 'application/json'
-        },
-    })
-
-    return response.ok
-}
-
-export const updateQuery = async (id: string, isOpen: boolean): Promise<boolean> => {
-    const url = `http://127.0.0.1:8080/query/${id}`;
-    
-    const response = await fetch(url, {
-        method: 'PUT',
-        body: JSON.stringify({
-            status: isOpen ? 'RESOLVED' : 'OPEN',
-            description: ''
-        }),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-
-    return response.ok;
-}
-
-export const deleteQuery = async (id: string): Promise<boolean> => {
-    const url = `http://127.0.0.1:8080/query/${id}`;
-    
+/**
+ * Generic API request handler with error handling
+ */
+async function apiRequest<T>(
+    endpoint: string, 
+    options: RequestInit = {}
+): Promise<ApiResponse<T>> {
     try {
-        console.log('Attempting to delete query with ID:', id);
+        const url = `${API_BASE_URL}${endpoint}`;
+        const defaultHeaders = {
+            'Content-Type': 'application/json',
+        };
+
         const response = await fetch(url, {
-            method: 'DELETE',
+            ...options,
+            headers: {
+                ...defaultHeaders,
+                ...options.headers,
+            },
         });
 
-        console.log('Delete response status:', response.status);
-        console.log('Delete response ok:', response.ok);
-        
         if (!response.ok) {
             const errorText = await response.text();
-            console.log('Error response:', errorText);
-            throw new Error(`Failed to delete query: ${errorText}`);
+            throw new Error(errorText || `HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();
-        return data.success;
+        return { success: true, data };
     } catch (error) {
-        console.error('Error in deleteQuery:', error);
-        return false;
+        console.error(`API request failed for ${endpoint}:`, error);
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Unknown error occurred'
+        };
     }
-};
+}
+
+/**
+ * Fetches all form data entries
+ */
+export async function getFormData(): Promise<ApiResponse<FormData[]>> {
+    const response = await apiRequest<FormDataResponse>('/form-data');
+    return {
+        ...response,
+        data: response.data?.formData
+    };
+}
+
+/**
+ * Creates a new query
+ */
+export async function createQuery(
+    title: string, 
+    description: string, 
+    formDataId: string
+): Promise<ApiResponse<Query>> {
+    return apiRequest<Query>('/query', {
+        method: 'POST',
+        body: JSON.stringify({ title, description, formDataId }),
+    });
+}
+
+/**
+ * Updates an existing query's status
+ */
+export async function updateQuery(
+    id: string, 
+    status: QueryStatus,
+    description?: string
+): Promise<ApiResponse<Query>> {
+    return apiRequest<Query>(`/query/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            status,
+            description: description || undefined,
+        }),
+    });
+}
+
+/**
+ * Deletes a query by ID
+ */
+export async function deleteQuery(id: string): Promise<ApiResponse<void>> {
+    return apiRequest<void>(`/query/${id}`, {
+        method: 'DELETE',
+    });
+}

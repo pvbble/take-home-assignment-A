@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import './App.css'
-import { getFormData, postQuery, updateQuery, deleteQuery } from './functions'
+import { getFormData, createQuery, updateQuery, deleteQuery } from './functions'
 import { FormData } from './types';
 
 function App() {
@@ -87,7 +87,7 @@ function App() {
             </button>
             </>: (
               <button onClick={
-                () => postQuery('whatever', 'w', currFd.id)
+                () => createQuery('whatever', 'w', currFd.id)
               }>
                 Create
               </button>
