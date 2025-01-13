@@ -9,7 +9,7 @@
 .header {
   display: flex;
   justify-content: space-between;
-  color: #444444;
+  color: var(--primary-color);
   margin: 0.5rem 0 1rem 0;
   padding: 0.5rem 1rem 0.5rem 1rem;
   border-bottom: 1px solid #CCCCCC;
@@ -39,17 +39,17 @@
   flex-direction: column;
   justify-content: center;
   padding: 0 1rem 0 1rem;
-  border-right: 1px solid #CCCCCC;
+  border-right: 1px solid var(--border-color);
 }
 
 .info h3 {
-  color: grey;
+  color: var(--primary-color);
   font-weight: 500;
   font-size: smaller;
 }
 
 .info p {
-  color: #222222;
+  color: var(--primary-color);
   font-weight: 500;
   font-size: medium;
   margin: 0.15rem 0 0 0;
@@ -80,7 +80,7 @@ dialog button {
 }
 
 .cancel {
-  color: #444444;
+  color: var(--primary-color);
 }
 
 .open-status {
@@ -105,7 +105,7 @@ dialog button {
 
 textarea {
   margin: 0 1rem 1rem 1rem;
-  background-color: #ffffff;
+  background-color: white;
   border-color: #22BB33;
   border-radius: 0.2rem;
   padding: 0.5rem;
@@ -118,5 +118,4 @@ textarea {
   max-width: 10rem;
   margin: 0 0 1rem 0;
   background-color: #3D3E5D;
-
 }

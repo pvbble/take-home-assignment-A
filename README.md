@@ -60,7 +60,7 @@ Returns all form data entries with their associated queries.
 Response:
 ```json
 {
-  "total": number,
+  "total": "number",
   "data": {
     "formData": [
       {
@@ -71,7 +71,7 @@ Response:
           "id": "uuid",
           "title": "string",
           "description": "string",
-          "status": "OPEN" | "RESOLVED",
+          "status": "OPEN | RESOLVED",
           "createdAt": "datetime",
           "updatedAt": "datetime"
         }
@@ -105,7 +105,7 @@ Updates an existing query's status or description.
 Request Body:
 ```json
 {
-  "status": "OPEN" | "RESOLVED",
+  "status": "OPEN | RESOLVED",
   "description": "string"
 }
 ```
