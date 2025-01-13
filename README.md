@@ -2,6 +2,12 @@
 
 This is my take home assignment for Vial: a full-stack web application for managing queries in an EDC system.
 
+## Demo
+
+This short demo video shows all the functionality of my project.
+
+https://github.com/user-attachments/assets/46fcca74-c8eb-4af8-a0cb-47199902c0eb
+
 ## Extra Features
 
 - Queries can be deleted.
